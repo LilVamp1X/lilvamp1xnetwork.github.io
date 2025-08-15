@@ -1,0 +1,90 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: black;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+canvas {
+    display: block;
+}
+
+/* Tabs container */
+.tabs {
+    position: fixed;
+    top: 10px; 
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    background: rgba(0,0,0,0.2);
+    z-index: 10;
+    border-radius: 30px;
+    padding: 5px;
+    backdrop-filter: blur(5px);
+}
+
+/* Individual tabs */
+.tab {
+    padding: 12px 30px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    margin: 0 5px;
+    border-radius: 25px; 
+    background: rgba(255,255,255,0.05);
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+
+/* Hover effect */
+.tab:hover {
+    background: rgba(255,255,255,0.2);
+    box-shadow: 0 0 15px white, 0 0 25px white;
+    transform: scale(1.1);
+}
+
+/* Active tab */
+.tab.active {
+    background: rgba(255,255,255,0.4);
+    color: white;
+    text-shadow: 0 0 5px white, 0 0 10px white, 0 0 20px white;
+    box-shadow: 0 0 20px white, 0 0 40px white, 0 0 60px white;
+    transform: scale(1.15);
+    animation: flicker 1s infinite;
+}
+
+/* Flicker animation */
+@keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+    }
+    20%, 24%, 55% {
+        opacity: 0.6;
+    }
+}
+
+/* Tab content */
+.tab-content {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    z-index: 5;
+    padding: 20px;
+    text-align: center;
+}
+
+.content {
+    display: none;
+    color: white;
+    font-size: 18px;
+}
+
+.content.active {
+    display: block;
+}
