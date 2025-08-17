@@ -402,7 +402,8 @@ document.addEventListener('DOMContentLoaded', function() {
         { name: "Temple Run 2", file: "Temple Run 2.html" },
         { name: "Territorial.io", file: "Territorial.io.html" },
         { name: "That's Not My Neighbor", file: "That's Not My Neighbor.html" },
-        { name: "The Deadseat", file: "The Deadseat.html"}
+        { name: "The Deadseat", file: "The Deadseat.html" },
+        { name: "The Man In The Window", file: "The Man In The Window.html" },
         { name: "The World's Hardest Game 3", file: "The World's Hardest Game 3.html" },
         { name: "The World's Hardest Game 4", file: "The World's Hardest Game 4.html" },
         { name: "The World's Hardest Game", file: "The World's Hardest Game.html" },
