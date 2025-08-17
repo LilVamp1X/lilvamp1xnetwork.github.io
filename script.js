@@ -303,6 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { name: "Quake III Arena", file: "Quake III Arena.html" },
         { name: "R.E.P.O", file: "R.E.P.O.html" },
         { name: "Race Master 3D", file: "Race Master 3D.html" },
+        { name: "Raft", file: "Raft.html"},
         { name: "Raft Wars 2", file: "Raft Wars 2.html" },
         { name: "Raft Wars", file: "Raft Wars.html" },
         { name: "Ragdoll Archers", file: "Ragdoll Archers.html" },
