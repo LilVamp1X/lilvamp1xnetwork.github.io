@@ -167,6 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { name: "Fancy Pants Adventure 4 Part 2", file: "Fancy Pants Adventure 4 Part 2.html" },
         { name: "Fancy Pants Adventure", file: "Fancy Pants Adventure.html" },
         { name: "Fashion Battle", file: "Fashion Battle.html" },
+        { name: "Fears to Fathom: Home Alone", file: "Fears to Fathom_ Home Alone.html"},
         { name: "Find the Alien", file: "Find the Alien.html" },
         { name: "Fire and Frost Master", file: "Fire and Frost Master.html" },
         { name: "Fireboy and Watergirl 2", file: "Fireboy and Watergirl 2.html" },
