@@ -1,0 +1,554 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Konami code sequence
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    const konamiDisplayMap = {
+        'ArrowUp': '↑',
+        'ArrowDown': '↓',
+        'ArrowLeft': '←',
+        'ArrowRight': '→',
+        'b': 'B',
+        'a': 'A'
+    };
+    let konamiIndex = 0;
+    const codeDisplay = document.querySelector('.code-display');
+    
+    // Game data - all your games listed
+    const games = [
+        { name: "10 Minutes Till Dawn", file: "10 Minutes Till Dawn.html" },
+        { name: "1v1.LoL", file: "1v1.LoL.html" },
+        { name: "2048 Merge Run", file: "2048 Merge Run.html" },
+        { name: "2048", file: "2048.html" },
+        { name: "3D Bowling", file: "3D Bowling.html" },
+        { name: "8 Ball Classic", file: "8 Ball Classic.html" },
+        { name: "8 Ball Pool", file: "8 Ball Pool.html" },
+        { name: "99 Balls", file: "99 Balls.html" },
+        { name: "A Bite at Freddy's", file: "A Bite at Freddy's.html" },
+        { name: "A Dance of Fire and Ice", file: "A Dance of Fire and Ice.html" },
+        { name: "A Small World Cup", file: "A Small World Cup.html" },
+        { name: "Abandoned", file: "Abandoned.html" },
+        { name: "Achievement Unlocked 2", file: "Achievement Unlocked 2.html" },
+        { name: "Achievement Unlocked 3", file: "Achievement Unlocked 3.html" },
+        { name: "Achievement Unlocked", file: "Achievement Unlocked.html" },
+        { name: "Adventure Capatalist", file: "Adventure Capatalist.html" },
+        { name: "Adventure Drivers", file: "Adventure Drivers.html" },
+        { name: "Ages of Conflict", file: "Ages of Conflict.html" },
+        { name: "Alien Hominid", file: "Alien Hominid.html" },
+        { name: "Amanda the Adventurer", file: "Amanda the Adventurer.html" },
+        { name: "Amaze", file: "Amaze.html" },
+        { name: "Andy's Apple Farm", file: "Andy's Apple Farm.html" },
+        { name: "Angry Birds Chrome", file: "Angry Birds Chrome.html" },
+        { name: "Angry Birds Showdown", file: "Angry Birds Showdown.html" },
+        { name: "Angry Birds", file: "Angry Birds.html" },
+        { name: "Aquapark.io", file: "Aquapark.io.html" },
+        { name: "Archery World Tour", file: "Archery World Tour.html" },
+        { name: "Attack Hole", file: "Attack Hole.html" },
+        { name: "Awesome Tanks 2", file: "Awesome Tanks 2.html" },
+        { name: "Awesome Tanks", file: "Awesome Tanks.html" },
+        { name: "Backrooms", file: "Backrooms.html" },
+        { name: "Bacon May Die", file: "Bacon May Die.html" },
+        { name: "Bad Ice Cream 2", file: "Bad Ice Cream 2.html" },
+        { name: "Bad Ice Cream 3", file: "Bad Ice Cream 3.html" },
+        { name: "Bad Ice Cream", file: "Bad Ice Cream.html" },
+        { name: "Bad Parenting 1", file: "Bad Parenting 1.html" },
+        { name: "Balatro", file: "Balatro.html" },
+        { name: "Baldi's Basics", file: "Baldi's Basics.html" },
+        { name: "Ball Blast", file: "Ball Blast.html" },
+        { name: "Bank Robbery 2", file: "Bank Robbery 2.html" },
+        { name: "Basket Battle", file: "Basket Battle.html" },
+        { name: "Basket Bros", file: "Basket Bros.html" },
+        { name: "Basket Random", file: "Basket Random.html" },
+        { name: "Basketball Frvr", file: "Basketball Frvr.html" },
+        { name: "Basketball Stars", file: "Basketball Stars.html" },
+        { name: "Bazooka Boy", file: "Bazooka Boy.html" },
+        { name: "Bendy and the Ink Machine", file: "Bendy and the Ink Machine.html" },
+        { name: "BERGENTRUCK 201x", file: "BERGENTRUCK 201x.html" },
+        { name: "Big ICE Tower Tiny Square", file: "Big ICE Tower Tiny Square.html" },
+        { name: "Big NEON Tower Tiny Square", file: "Big NEON Tower Tiny Square.html" },
+        { name: "Big Tower Tiny Square 2", file: "Big Tower Tiny Square 2.html" },
+        { name: "Big Tower Tiny Square", file: "Big Tower Tiny Square.html" },
+        { name: "Binding of Issac: Wrath of the Lamb", file: "Binding of Issac_ Wrath of the Lamb.html" },
+        { name: "BitLife", file: "BitLife.html" },
+        { name: "BitPlanes", file: "BitPlanes.html" },
+        { name: "BlackJack", file: "BlackJack.html" },
+        { name: "Blade Ball", file: "Blade Ball.html" },
+        { name: "Block Blast", file: "Block Blast.html" },
+        { name: "BlockPost", file: "BlockPost.html" },
+        { name: "Blocky Snakes", file: "Blocky Snakes.html" },
+        { name: "BLOODMONEY!", file: "BLOODMONEY!.html" },
+        { name: "Bloons TD 2", file: "Bloons TD 2.html" },
+        { name: "Bloons TD 3", file: "Bloons TD 3.html" },
+        { name: "Bloons TD 4", file: "Bloons TD 4.html" },
+        { name: "Bloons TD 5", file: "Bloons TD 5.html" },
+        { name: "Bloons TD", file: "Bloons TD.html" },
+        { name: "Bloxorz", file: "Bloxorz.html" },
+        { name: "Blumgi Rocket", file: "Blumgi Rocket.html" },
+        { name: "Bob The Robber 2", file: "Bob The Robber 2.html" },
+        { name: "Bottle Jump 3D", file: "Bottle Jump 3D.html" },
+        { name: "Bowmasters", file: "Bowmasters.html" },
+        { name: "Boxing Random", file: "Boxing Random.html" },
+        { name: "Brawl Guys.io", file: "Brawl Guys.io.html" },
+        { name: "Bridge Race", file: "Bridge Race.html" },
+        { name: "Buckshot Roulette", file: "Buckshot Roulette.html" },
+        { name: "Build a Big Army", file: "Build a Big Army.html" },
+        { name: "Build a Queen", file: "Build a Queen.html" },
+        { name: "Burrito Bison", file: "Burrito Bison.html" },
+        { name: "Camouflage and Sniper", file: "Camouflage and Sniper.html" },
+        { name: "Candy Crush", file: "Candy Crush.html" },
+        { name: "Cannon Balls 3D", file: "Cannon Balls 3D.html" },
+        { name: "Cannon Basketball 2", file: "Cannon Basketball 2.html" },
+        { name: "Cannon Basketball", file: "Cannon Basketball.html" },
+        { name: "Car Survival 3D", file: "Car Survival 3D.html" },
+        { name: "Carrom Clash", file: "Carrom Clash.html" },
+        { name: "Celeste PICO", file: "Celeste PICO.html" },
+        { name: "Cheese Chompers 3D", file: "Cheese Chompers 3D.html" },
+        { name: "Chess Classic", file: "Chess Classic.html" },
+        { name: "CircloO 2", file: "CircloO 2.html" },
+        { name: "CircloO", file: "CircloO.html" },
+        { name: "City Defense", file: "City Defense.html" },
+        { name: "City Smash", file: "City Smash.html" },
+        { name: "Class of '09", file: "Class of '09.html" },
+        { name: "Clothing Shop 3D", file: "Clothing Shop 3D.html" },
+        { name: "Cluster Rush", file: "Cluster Rush.html" },
+        { name: "Code Editor", file: "Code Editor.html" },
+        { name: "Color Match", file: "Color Match.html" },
+        { name: "Color Water Sort 3D", file: "Color Water Sort 3D.html" },
+        { name: "Cookie Clicker", file: "Cookie Clicker.html" },
+        { name: "Cool Cars Run 3D", file: "Cool Cars Run 3D.html" },
+        { name: "Coreball", file: "Coreball.html" },
+        { name: "Crazy Cars", file: "Crazy Cars.html" },
+        { name: "Crazy Cattle 3D", file: "Crazy Cattle 3D.html" },
+        { name: "Crossy Road", file: "Crossy Road.html" },
+        { name: "Crush Cars 3D", file: "Crush Cars 3D.html" },
+        { name: "Cubefield", file: "Cubefield.html" },
+        { name: "Cut the Rope", file: "Cut the Rope.html" },
+        { name: "Cut the Rope: Holiday Gift", file: "Cut the Rope_ Holiday Gift.html" },
+        { name: "Cut the Rope: Time Travel", file: "Cut the Rope_ Time Travel.html" },
+        { name: "Dadish 2", file: "Dadish 2.html" },
+        { name: "Dadish 3", file: "Dadish 3.html" },
+        { name: "Dadish 3D", file: "Dadish 3D.html" },
+        { name: "Dadish", file: "Dadish.html" },
+        { name: "Daily Dadish", file: "Daily Dadish.html" },
+        { name: "Death Run 3D", file: "Death Run 3D.html" },
+        { name: "Deltarune", file: "Deltarune.html" },
+        { name: "Destiny Run 3D", file: "Destiny Run 3D.html" },
+        { name: "Destroy The Car 3D", file: "Destroy The Car 3D.html" },
+        { name: "Diamond Seeker", file: "Diamond Seeker.html" },
+        { name: "Dig Deep", file: "Dig Deep.html" },
+        { name: "Do NOT Take This Cat Home", file: "Do NOT Take This Cat Home.html" },
+        { name: "Doki Doki Literature Club", file: "Doki Doki Literature Club.html" },
+        { name: "DON'T YOU LECTURE ME", file: "DON'T YOU LECTURE ME.html" },
+        { name: "DOOM", file: "DOOM.html" },
+        { name: "Dragon vs Bricks", file: "Dragon vs Bricks.html" },
+        { name: "Draw Climber", file: "Draw Climber.html" },
+        { name: "Draw Joust", file: "Draw Joust.html" },
+        { name: "Draw the Hill", file: "Draw the Hill.html" },
+        { name: "Draw the Line", file: "Draw the Line.html" },
+        { name: "Dreadhead Parkour", file: "Dreadhead Parkour.html" },
+        { name: "Drift Boss", file: "Drift Boss.html" },
+        { name: "Drift Hunters", file: "Drift Hunters.html" },
+        { name: "Drive Mad", file: "Drive Mad.html" },
+        { name: "Driven Wild", file: "Driven Wild.html" },
+        { name: "Duck Life 2", file: "Duck Life 2.html" },
+        { name: "Duck Life 3", file: "Duck Life 3.html" },
+        { name: "Duck Life 4", file: "Duck Life 4.html" },
+        { name: "Duck Life 5", file: "Duck Life 5.html" },
+        { name: "Duck Life", file: "Duck Life.html" },
+        { name: "Elastic Man", file: "Elastic Man.html" },
+        { name: "Emulator.JS", file: "Emulator.JS.html" },
+        { name: "Endoparasitic", file: "Endoparasitic.html" },
+        { name: "Escape Road 2", file: "Escape Road 2.html" },
+        { name: "Escape Road", file: "Escape Road.html" },
+        { name: "Evil Glitch", file: "Evil Glitch.html" },
+        { name: "Evolving Bombs 3D", file: "Evolving Bombs 3D.html" },
+        { name: "EvoWars.io", file: "EvoWars.io.html" },
+        { name: "Fancy Pants Adventure 2", file: "Fancy Pants Adventure 2.html" },
+        { name: "Fancy Pants Adventure 3", file: "Fancy Pants Adventure 3.html" },
+        { name: "Fancy Pants Adventure 4 Part 1", file: "Fancy Pants Adventure 4 Part 1.html" },
+        { name: "Fancy Pants Adventure 4 Part 2", file: "Fancy Pants Adventure 4 Part 2.html" },
+        { name: "Fancy Pants Adventure", file: "Fancy Pants Adventure.html" },
+        { name: "Fashion Battle", file: "Fashion Battle.html" },
+        { name: "Find the Alien", file: "Find the Alien.html" },
+        { name: "Fire and Frost Master", file: "Fire and Frost Master.html" },
+        { name: "Fireboy and Watergirl 2", file: "Fireboy and Watergirl 2.html" },
+        { name: "Fitness Empire", file: "Fitness Empire.html" },
+        { name: "Five Nights at Freddy's 2", file: "Five Nights at Freddy's 2.html" },
+        { name: "Five Nights at Freddy's 3", file: "Five Nights at Freddy's 3.html" },
+        { name: "Five Nights at Freddy's 4", file: "Five Nights at Freddy's 4.html" },
+        { name: "Five Nights at Freddy's 4: Halloween", file: "Five Nights at Freddy's 4_ Halloween.html" },
+        { name: "Five Nights at Freddy's", file: "Five Nights at Freddy's.html" },
+        { name: "Five Nights at Freddy's: Pizza Simulator", file: "Five Nights at Freddy's_ Pizza Simulator.html" },
+        { name: "Five Nights at Freddy's: Sister Location", file: "Five Nights at Freddy's_ Sister Location.html" },
+        { name: "Five Nights at Freddy's: Ultimate Custom Night", file: "Five Nights at Freddy's_ Ultimate Custom Night.html" },
+        { name: "Five Nights at Freddy's: World", file: "Five Nights at Freddy's_ World.html" },
+        { name: "Five Nights at Winston's", file: "Five Nights at Winston's.html" },
+        { name: "Flappy Bird", file: "Flappy Bird.html" },
+        { name: "Flappy Dunk", file: "Flappy Dunk.html" },
+        { name: "Flick Goal", file: "Flick Goal.html" },
+        { name: "Flip Master", file: "Flip Master.html" },
+        { name: "Fork n Sausage", file: "Fork n Sausage.html" },
+        { name: "Fortzone Battle Royale", file: "Fortzone Battle Royale.html" },
+        { name: "Friday Night Funkin", file: "Friday Night Funkin.html" },
+        { name: "Fruit Ninja", file: "Fruit Ninja.html" },
+        { name: "Geometry Dash Lite", file: "Geometry Dash Lite.html" },
+        { name: "Getaway Shootout", file: "Getaway Shootout.html" },
+        { name: "Giant Wanted", file: "Giant Wanted.html" },
+        { name: "Gladihoppers", file: "Gladihoppers.html" },
+        { name: "Gobble", file: "Gobble.html" },
+        { name: "God's Flesh", file: "God's Flesh.html" },
+        { name: "Going Balls", file: "Going Balls.html" },
+        { name: "Google Feud", file: "Google Feud.html" },
+        { name: "Granny 2", file: "Granny 2.html" },
+        { name: "Granny 3", file: "Granny 3.html" },
+        { name: "Granny", file: "Granny.html" },
+        { name: "Guess Their Answer", file: "Guess Their Answer.html" },
+        { name: "Gun Clone", file: "Gun Clone.html" },
+        { name: "Gun Runner", file: "Gun Runner.html" },
+        { name: "Gunspin", file: "Gunspin.html" },
+        { name: "Half Life", file: "Half Life.html" },
+        { name: "Happy Sheepies", file: "Happy Sheepies.html" },
+        { name: "Harvest.io", file: "Harvest.io.html" },
+        { name: "Hide N Seek", file: "Hide N Seek.html" },
+        { name: "High Heels", file: "High Heels.html" },
+        { name: "Highway Racer 2", file: "Highway Racer 2.html" },
+        { name: "Hill Climb Racing Lite", file: "Hill Climb Racing Lite.html" },
+        { name: "Hotline Miami", file: "Hotline Miami.html" },
+        { name: "House of Hazards", file: "House of Hazards.html" },
+        { name: "Ice Dodo", file: "Ice Dodo.html" },
+        { name: "Idle Breakout", file: "Idle Breakout.html" },
+        { name: "Idle Dice", file: "Idle Dice.html" },
+        { name: "Idle Lumber Inc", file: "Idle Lumber Inc.html" },
+        { name: "Idle Mining Empire", file: "Idle Mining Empire.html" },
+        { name: "Infinimoes", file: "Infinimoes.html" },
+        { name: "Jelly Mario", file: "Jelly Mario.html" },
+        { name: "Jetpack Joyride", file: "Jetpack Joyride.html" },
+        { name: "Johnny Trigger", file: "Johnny Trigger.html" },
+        { name: "Journey Downhill", file: "Journey Downhill.html" },
+        { name: "JustFall.lol", file: "JustFall.lol.html" },
+        { name: "Kaji Run", file: "Kaji Run.html" },
+        { name: "Kindergarten 2", file: "Kindergarten 2.html" },
+        { name: "Kindergarten", file: "Kindergarten.html" },
+        { name: "Kitchen Bazar", file: "Kitchen Bazar.html" },
+        { name: "Kitty Toy", file: "Kitty Toy.html" },
+        { name: "Learn to Fly 2", file: "Learn to Fly 2.html" },
+        { name: "Learn to Fly 3", file: "Learn to Fly 3.html" },
+        { name: "Learn to Fly Idle", file: "Learn to Fly Idle.html" },
+        { name: "Learn to Fly", file: "Learn to Fly.html" },
+        { name: "Line Rider", file: "Line Rider.html" },
+        { name: "Little Runmo", file: "Little Runmo.html" },
+        { name: "Madalin Stunt Cars 2", file: "Madalin Stunt Cars 2.html" },
+        { name: "Madalin Stunt Cars 3", file: "Madalin Stunt Cars 3.html" },
+        { name: "Magic Tiles 3", file: "Magic Tiles 3.html" },
+        { name: "Make a SuperBoat", file: "Make a SuperBoat.html" },
+        { name: "Makeover Run", file: "Makeover Run.html" },
+        { name: "Maze Speedrun", file: "Maze Speedrun.html" },
+        { name: "Mega Car Jumps", file: "Mega Car Jumps.html" },
+        { name: "Melon Playground", file: "Melon Playground.html" },
+        { name: "Merge Harvest", file: "Merge Harvest.html" },
+        { name: "Minecraft 1.12.2", file: "Minecraft 1.12.2.html" },
+        { name: "Minecraft 1.21.4", file: "Minecraft 1.21.4.html" },
+        { name: "Minecraft 1.8.8", file: "Minecraft 1.8.8.html" },
+        { name: "Minesweeper Mania", file: "Minesweeper Mania.html" },
+        { name: "Mob Control HTML5", file: "Mob Control HTML5.html" },
+        { name: "Money Rush", file: "Money Rush.html" },
+        { name: "Monkey Mart", file: "Monkey Mart.html" },
+        { name: "Monster Box 3D", file: "Monster Box 3D.html" },
+        { name: "Monster Tracks", file: "Monster Tracks.html" },
+        { name: "Moto X3M 2", file: "Moto X3M 2.html" },
+        { name: "Moto X3M 3", file: "Moto X3M 3.html" },
+        { name: "Moto X3M Pool Party", file: "Moto X3M Pool Party.html" },
+        { name: "Moto X3M Spooky", file: "Moto X3M Spooky.html" },
+        { name: "Moto X3M Winter", file: "Moto X3M Winter.html" },
+        { name: "Moto X3M", file: "Moto X3M.html" },
+        { name: "n-gon", file: "n-gon.html" },
+        { name: "Nazi Zombies: Portable", file: "Nazi Zombies_ Portable.html" },
+        { name: "Nijika's Ahoge", file: "Nijika's Ahoge.html" },
+        { name: "Ninja vs EvilCorp", file: "Ninja vs EvilCorp.html" },
+        { name: "Office Fight", file: "Office Fight.html" },
+        { name: "Offroad Mountain Bike", file: "Offroad Mountain Bike.html" },
+        { name: "Om Nom Run", file: "Om Nom Run.html" },
+        { name: "OMORI", file: "OMORI.html" },
+        { name: "osu!", file: "osu!.html" },
+        { name: "OvO 2", file: "OvO 2.html" },
+        { name: "OvO 3 Dimensions", file: "OvO 3 Dimensions.html" },
+        { name: "OvO", file: "OvO.html" },
+        { name: "Pac-Man Superfast", file: "Pac-Man Superfast.html" },
+        { name: "Papa's Bakeria", file: "Papa's Bakeria.html" },
+        { name: "Papa's Burgeria", file: "Papa's Burgeria.html" },
+        { name: "Papa's Cheeseria", file: "Papa's Cheeseria.html" },
+        { name: "Papa's Cupcakeria", file: "Papa's Cupcakeria.html" },
+        { name: "Papa's Donuteria", file: "Papa's Donuteria.html" },
+        { name: "Papa's Freezeria", file: "Papa's Freezeria.html" },
+        { name: "Papa's Hot Doggeria", file: "Papa's Hot Doggeria.html" },
+        { name: "Papa's Pancakeria", file: "Papa's Pancakeria.html" },
+        { name: "Papa's Pastaria", file: "Papa's Pastaria.html" },
+        { name: "Papa's Pizeria", file: "Papa's Pizeria.html" },
+        { name: "Papa's Scooperia", file: "Papa's Scooperia.html" },
+        { name: "Papa's Sushiria", file: "Papa's Sushiria.html" },
+        { name: "Papa's Taco Mia", file: "Papa's Taco Mia.html" },
+        { name: "Papa's Wingeria", file: "Papa's Wingeria.html" },
+        { name: "Paper.io 2", file: "Paper.io 2.html" },
+        { name: "Papers, Please", file: "Papers, Please.html" },
+        { name: "Papery Planes", file: "Papery Planes.html" },
+        { name: "Parking Fury 3D", file: "Parking Fury 3D.html" },
+        { name: "Parking Rush", file: "Parking Rush.html" },
+        { name: "People Playground", file: "People Playground.html" },
+        { name: "Pixel Gun Survival", file: "Pixel Gun Survival.html" },
+        { name: "Pizza Tower", file: "Pizza Tower.html" },
+        { name: "Plants vs Zombies", file: "Plants vs Zombies.html" },
+        { name: "Pokey Ball", file: "Pokey Ball.html" },
+        { name: "Poly Track", file: "Poly Track.html" },
+        { name: "Pou", file: "Pou.html" },
+        { name: "Protektor", file: "Protektor.html" },
+        { name: "Quake III Arena", file: "Quake III Arena.html" },
+        { name: "R.E.P.O", file: "R.E.P.O.html" },
+        { name: "Race Master 3D", file: "Race Master 3D.html" },
+        { name: "Raft Wars 2", file: "Raft Wars 2.html" },
+        { name: "Raft Wars", file: "Raft Wars.html" },
+        { name: "Ragdoll Archers", file: "Ragdoll Archers.html" },
+        { name: "Ragdoll Hit", file: "Ragdoll Hit.html" },
+        { name: "Rainbow Obby", file: "Rainbow Obby.html" },
+        { name: "Red Ball 2", file: "Red Ball 2.html" },
+        { name: "Red Ball 3", file: "Red Ball 3.html" },
+        { name: "Red Ball 4 Vol. 2", file: "Red Ball 4 Vol. 2.html" },
+        { name: "Red Ball 4 Vol. 3", file: "Red Ball 4 Vol. 3.html" },
+        { name: "Red Ball 4", file: "Red Ball 4.html" },
+        { name: "Red Ball", file: "Red Ball.html" },
+        { name: "Retro Bowl College", file: "Retro Bowl College.html" },
+        { name: "Retro Bowl", file: "Retro Bowl.html" },
+        { name: "RE_RUN", file: "RE_RUN.html" },
+        { name: "Rich Run 3D", file: "Rich Run 3D.html" },
+        { name: "Riddle School 2", file: "Riddle School 2.html" },
+        { name: "Riddle School 3", file: "Riddle School 3.html" },
+        { name: "Riddle School 4", file: "Riddle School 4.html" },
+        { name: "Riddle School 5", file: "Riddle School 5.html" },
+        { name: "Riddle School", file: "Riddle School.html" },
+        { name: "Riddle Transfer 2", file: "Riddle Transfer 2.html" },
+        { name: "Riddle Transfer", file: "Riddle Transfer.html" },
+        { name: "Road of Fury", file: "Road of Fury.html" },
+        { name: "Robot Invasion", file: "Robot Invasion.html" },
+        { name: "Rolly Vortex", file: "Rolly Vortex.html" },
+        { name: "Rooftop Snipers", file: "Rooftop Snipers.html" },
+        { name: "Room Sort", file: "Room Sort.html" },
+        { name: "Ruffle", file: "Ruffle.html" },
+        { name: "Run 1", file: "Run 1.html" },
+        { name: "Run 2", file: "Run 2.html" },
+        { name: "Run 3", file: "Run 3.html" },
+        { name: "Sandboxels", file: "Sandboxels.html" },
+        { name: "sandspiel", file: "sandspiel.html" },
+        { name: "Sandtris", file: "Sandtris.html" },
+        { name: "Scrap Metal 3", file: "Scrap Metal 3.html" },
+        { name: "Seat Jam 3D", file: "Seat Jam 3D.html" },
+        { name: "Shipo.io", file: "Shipo.io.html" },
+        { name: "Shooting Master", file: "Shooting Master.html" },
+        { name: "Side Effects", file: "Side Effects.html" },
+        { name: "Slender: The 8 Pages", file: "Slender_ The 8 Pages.html" },
+        { name: "Slice it All", file: "Slice it All.html" },
+        { name: "Slime.io", file: "Slime.io.html" },
+        { name: "Slope 2", file: "Slope 2.html" },
+        { name: "Slope", file: "Slope.html" },
+        { name: "Slowroads", file: "Slowroads.html" },
+        { name: "Smash Karts", file: "Smash Karts.html" },
+        { name: "Snow Rider 3D", file: "Snow Rider 3D.html" },
+        { name: "Snowbattle.io", file: "Snowbattle.io.html" },
+        { name: "Solar Smash", file: "Solar Smash.html" },
+        { name: "Sort the Court", file: "Sort the Court.html" },
+        { name: "Soundboard", file: "Soundboard.html" },
+        { name: "Space Waves", file: "Space Waves.html" },
+        { name: "Speed Stars", file: "Speed Stars.html" },
+        { name: "SpiderDoll", file: "SpiderDoll.html" },
+        { name: "Spiral Roll", file: "Spiral Roll.html" },
+        { name: "Sprunki", file: "Sprunki.html" },
+        { name: "Stacky Dash", file: "Stacky Dash.html" },
+        { name: "State.io", file: "State.io.html" },
+        { name: "Station 141", file: "Station 141.html" },
+        { name: "Station Saturn", file: "Station Saturn.html" },
+        { name: "Stickman Boost", file: "Stickman Boost.html" },
+        { name: "Stickman Climb", file: "Stickman Climb.html" },
+        { name: "Stickman Fight Ragdoll", file: "Stickman Fight Ragdoll.html" },
+        { name: "Stickman Golf", file: "Stickman Golf.html" },
+        { name: "Stickman Hook", file: "Stickman Hook.html" },
+        { name: "Subway Surfers: Barcelona", file: "Subway Surfers_ Barcelona.html" },
+        { name: "Subway Surfers: Beijing", file: "Subway Surfers_ Beijing.html" },
+        { name: "Subway Surfers: Berlin", file: "Subway Surfers_ Berlin.html" },
+        { name: "Subway Surfers: Buenos Aires", file: "Subway Surfers_ Buenos Aires.html" },
+        { name: "Subway Surfers: Havana", file: "Subway Surfers_ Havana.html" },
+        { name: "Subway Surfers: Houston", file: "Subway Surfers_ Houston.html" },
+        { name: "Subway Surfers: Iceland", file: "Subway Surfers_ Iceland.html" },
+        { name: "Subway Surfers: London", file: "Subway Surfers_ London.html" },
+        { name: "Subway Surfers: Mexico", file: "Subway Surfers_ Mexico.html" },
+        { name: "Subway Surfers: Miami", file: "Subway Surfers_ Miami.html" },
+        { name: "Subway Surfers: Monaco", file: "Subway Surfers_ Monaco.html" },
+        { name: "Subway Surfers: New Orleans", file: "Subway Surfers_ New Orleans.html" },
+        { name: "Subway Surfers: San Francisco", file: "Subway Surfers_ San Francisco.html" },
+        { name: "Subway Surfers: St. Petersburg", file: "Subway Surfers_ St. Petersburg.html" },
+        { name: "Subway Surfers: Winter Holiday", file: "Subway Surfers_ Winter Holiday.html" },
+        { name: "Subway Surfers: Zurich", file: "Subway Surfers_ Zurich.html" },
+        { name: "Super Mario 63", file: "Super Mario 63.html" },
+        { name: "Superhot", file: "Superhot.html" },
+        { name: "Supermarket 3D", file: "Supermarket 3D.html" },
+        { name: "Supreme Duelist", file: "Supreme Duelist.html" },
+        { name: "Survival Race", file: "Survival Race.html" },
+        { name: "Survive to Victory", file: "Survive to Victory.html" },
+        { name: "Sushi Roll", file: "Sushi Roll.html" },
+        { name: "Swords and Souls", file: "Swords and Souls.html" },
+        { name: "Tall Man Run", file: "Tall Man Run.html" },
+        { name: "Tanuki Sunset", file: "Tanuki Sunset.html" },
+        { name: "Telekinesis Attack", file: "Telekinesis Attack.html" },
+        { name: "Telekinesis Car", file: "Telekinesis Car.html" },
+        { name: "Telekinesis Drive", file: "Telekinesis Drive.html" },
+        { name: "Telekinesis", file: "Telekinesis.html" },
+        { name: "Temple Run 2", file: "Temple Run 2.html" },
+        { name: "Territorial.io", file: "Territorial.io.html" },
+        { name: "That's Not My Neighbor", file: "That's Not My Neighbor.html" },
+        { name: "The World's Hardest Game 3", file: "The World's Hardest Game 3.html" },
+        { name: "The World's Hardest Game 4", file: "The World's Hardest Game 4.html" },
+        { name: "The World's Hardest Game", file: "The World's Hardest Game.html" },
+        { name: "They Are Coming", file: "They Are Coming.html" },
+        { name: "This Is The Only Level 2", file: "This Is The Only Level 2.html" },
+        { name: "This Is The Only Level", file: "This Is The Only Level.html" },
+        { name: "TileTopia", file: "TileTopia.html" },
+        { name: "Time Shooter 1", file: "Time Shooter 1.html" },
+        { name: "Time Shooter 2", file: "Time Shooter 2.html" },
+        { name: "Time Shooter 3: SWAT", file: "Time Shooter 3_ SWAT.html" },
+        { name: "Tiny Fishing", file: "Tiny Fishing.html" },
+        { name: "Tomb Of The Mask", file: "Tomb Of The Mask.html" },
+        { name: "Toss The Turtle", file: "Toss The Turtle.html" },
+        { name: "Tower Crash 3D", file: "Tower Crash 3D.html" },
+        { name: "Triple Match 3D", file: "Triple Match 3D.html" },
+        { name: "Trivia Crack", file: "Trivia Crack.html" },
+        { name: "Tube Jumpers", file: "Tube Jumpers.html" },
+        { name: "Tug of War with Cars", file: "Tug of War with Cars.html" },
+        { name: "Tunnel Rush", file: "Tunnel Rush.html" },
+        { name: "Turbo Stars", file: "Turbo Stars.html" },
+        { name: "Twerk Race 3D", file: "Twerk Race 3D.html" },
+        { name: "Twisted Rope 3D", file: "Twisted Rope 3D.html" },
+        { name: "ULTRAKILL", file: "ULTRAKILL.html" },
+        { name: "Undertale", file: "Undertale.html" },
+        { name: "Vex 1", file: "Vex 1.html" },
+        { name: "Vex 2", file: "Vex 2.html" },
+        { name: "Vex 3 XMAS", file: "Vex 3 XMAS.html" },
+        { name: "Vex 3", file: "Vex 3.html" },
+        { name: "Vex 4", file: "Vex 4.html" },
+        { name: "Vex 5", file: "Vex 5.html" },
+        { name: "Vex 6", file: "Vex 6.html" },
+        { name: "Vex 7", file: "Vex 7.html" },
+        { name: "Vex 8", file: "Vex 8.html" },
+        { name: "Vex Challenges", file: "Vex Challenges.html" },
+        { name: "Vex X3M 2", file: "Vex X3M 2.html" },
+        { name: "Vex X3M", file: "Vex X3M.html" },
+        { name: "Wall Crawler", file: "Wall Crawler.html" },
+        { name: "War Regions", file: "War Regions.html" },
+        { name: "War The Knights", file: "War The Knights.html" },
+        { name: "Weapon Craft Run", file: "Weapon Craft Run.html" },
+        { name: "Weapon Scale", file: "Weapon Scale.html" },
+        { name: "Weapon Upgrade Rush", file: "Weapon Upgrade Rush.html" },
+        { name: "WebFishing", file: "WebFishing.html" },
+        { name: "Wheely 2", file: "Wheely 2.html" },
+        { name: "Wheely 3", file: "Wheely 3.html" },
+        { name: "Wheely 4", file: "Wheely 4.html" },
+        { name: "Wheely 5", file: "Wheely 5.html" },
+        { name: "Wheely 6", file: "Wheely 6.html" },
+        { name: "Wheely 7", file: "Wheely 7.html" },
+        { name: "Wheely 8", file: "Wheely 8.html" },
+        { name: "Wheely", file: "Wheely.html" },
+        { name: "Wordle", file: "Wordle.html" },
+        { name: "World Box", file: "World Box.html" },
+        { name: "Yume Nikki", file: "Yume Nikki.html" }
+    ];
+
+    // DOM elements
+    const accessScreen = document.getElementById('access-screen');
+    const mainContent = document.getElementById('main-content');
+    const gamesSection = document.getElementById('games-section');
+    const aboutSection = document.getElementById('about-section');
+    const gameFrameSection = document.getElementById('game-frame-section');
+    const gamesGrid = document.getElementById('games-grid');
+    const gameSearch = document.getElementById('game-search');
+    const gameFrame = document.getElementById('game-frame');
+    const currentGameTitle = document.getElementById('current-game-title');
+    const backBtn = document.getElementById('back-btn');
+    const gamesBtn = document.getElementById('games-btn');
+    const aboutBtn = document.getElementById('about-btn');
+
+    // Konami code listener
+    document.addEventListener('keydown', function(e) {
+        if (konamiIndex < konamiCode.length && e.key.toLowerCase() === konamiCode[konamiIndex].toLowerCase()) {
+            konamiIndex++;
+            updateCodeDisplay();
+            
+            if (konamiIndex === konamiCode.length) {
+                setTimeout(() => {
+                    accessScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        accessScreen.classList.add('hidden');
+                        mainContent.classList.remove('hidden');
+                        populateGamesGrid(games);
+                    }, 500);
+                }, 500);
+            }
+        } else {
+            konamiIndex = 0;
+            updateCodeDisplay();
+        }
+    });
+
+    function updateCodeDisplay() {
+        let displayText = '';
+        for (let i = 0; i < konamiIndex; i++) {
+            displayText += konamiDisplayMap[konamiCode[i]] + ' ';
+        }
+        codeDisplay.textContent = displayText.trim();
+    }
+
+    // Populate games grid
+    function populateGamesGrid(gamesList) {
+        gamesGrid.innerHTML = '';
+        gamesList.forEach(game => {
+            const gameCard = document.createElement('div');
+            gameCard.className = 'game-card';
+            gameCard.innerHTML = `<h3>${game.name}</h3>`;
+            gameCard.addEventListener('click', () => openGame(game));
+            gamesGrid.appendChild(gameCard);
+        });
+    }
+
+    // Open game in iframe
+    function openGame(game) {
+        gamesSection.classList.add('hidden');
+        aboutSection.classList.add('hidden');
+        gameFrameSection.classList.remove('hidden');
+        currentGameTitle.textContent = game.name;
+        gameFrame.src = game.file;
+    }
+
+    // Back button
+    backBtn.addEventListener('click', () => {
+        gameFrameSection.classList.add('hidden');
+        gameFrame.src = '';
+        gamesSection.classList.remove('hidden');
+    });
+
+    // Navigation buttons
+    gamesBtn.addEventListener('click', () => {
+        gamesSection.classList.remove('hidden');
+        aboutSection.classList.add('hidden');
+        gameFrameSection.classList.add('hidden');
+        gameFrame.src = '';
+    });
+
+    aboutBtn.addEventListener('click', () => {
+        gamesSection.classList.add('hidden');
+        aboutSection.classList.remove('hidden');
+        gameFrameSection.classList.add('hidden');
+        gameFrame.src = '';
+    });
+
+    // Search functionality
+    gameSearch.addEventListener('input', () => {
+        const searchTerm = gameSearch.value.toLowerCase();
+        const filteredGames = games.filter(game => 
+            game.name.toLowerCase().includes(searchTerm)
+        );
+        populateGamesGrid(filteredGames);
+    });
+});
