@@ -428,7 +428,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { name: "Twisted Rope 3D", file: "Twisted Rope 3D.html" },
         { name: "ULTRAKILL", file: "ULTRAKILL.html" },
         { name: "Undertale", file: "Undertale.html" },
-        { name: "Undertale Yellow", "Undertale Yellow.html" },
+        { name: "Undertale Yellow", file: "Undertale Yellow.html" },
         { name: "Vex 1", file: "Vex 1.html" },
         { name: "Vex 2", file: "Vex 2.html" },
         { name: "Vex 3 XMAS", file: "Vex 3 XMAS.html" },
